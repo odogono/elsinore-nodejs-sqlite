@@ -1,0 +1,11 @@
+#!/usr/bin/env node
+
+var path = require('path'),
+    root = path.join( path.dirname(__filename), '../' ),
+    mocha = path.join( root, 'node_modules', 'mocha', 'bin', 'mocha' );
+
+// set environment to test if not already set
+if( !process.env.NODE_ENV ) process.env.NODE_ENV = 'test';
+if( !process.env.COMMON_ROOT_DIR ) process.env.COMMON_ROOT_DIR = root;
+
+require(mocha);

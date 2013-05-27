@@ -1,0 +1,19 @@
+{
+  "name": "odgn-entity-sqlite",
+  "version": "0.1.0",
+  "author": "Alexander Veenendaal <alex@opendoorgonorth.com> http://opendoorgonorth.com",
+  "dependencies": {
+    "sqlite3": "~2.1.7",
+    "async": "~0.2.8"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-clean": "~0.4.0",
+    "grunt-contrib-jshint": "~0.3.0",
+    "grunt-contrib-watch": "~0.3.1",
+    "grunt-jsbeautifier": "~0.1.7",
+    "grunt-simple-mocha": "~0.4.0",
+    "mocha": "~1.10.0",
+    "shelljs": "~0.1.3"
+  }
+}
