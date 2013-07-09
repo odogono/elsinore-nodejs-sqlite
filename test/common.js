@@ -8,13 +8,63 @@ sh = require('shelljs');
 
 root.print_ins = function(arg,depth,showHidden,colors){
     if( _.isUndefined(depth) ) depth = 5;
+    var stack = __stack[1];
+    var fnName = stack.getFunctionName();
+    var line = stack.getLineNumber();
+    // util.log( fnName + ':' + line + ' ' + util.inspect(arg,showHidden,depth,colors) );
     util.log( util.inspect(arg,showHidden,depth,colors) );
 };
 
 root.print_var = function(arg, options){
-    util.log( JSON.stringify(arg,null,'\t') );
+    var stack = __stack[1];
+    var fnName = stack.getFunctionName();
+    var line = stack.getLineNumber();
+    // util.log( fnName + ':' + line + ' ' + JSON.stringify(arg,null,'\t') );
+    util.log( JSON.stringify(arg,null,"\t") );
 }
 
 root.log = {
-    debug: util.log
+    warn:util.log,
+    error: util.log,
+    debug: util.log,
+    info: util.log
 }
+
+root.print_stack = function(){
+    var rootPath = path.join(path.dirname(__filename),'../');
+    var stack = _.map(__stack, function(entry,i){
+        var filename = entry.getFileName();
+        if( filename.indexOf(rootPath) === 0  ){
+            filename = filename.substring(rootPath.length);
+        }
+        return _.repeat("  ", i) + filename + ' ' + entry.getFunctionName() + ':' + entry.getLineNumber()
+    });
+    stack.shift();
+    util.log( "\n" + stack.join("\n") );
+}
+
+Object.defineProperty(global, '__stack', {
+get: function() {
+        var orig = Error.prepareStackTrace;
+        Error.prepareStackTrace = function(_, stack) {
+            return stack;
+        };
+        var err = new Error;
+        Error.captureStackTrace(err, arguments.callee);
+        var stack = err.stack;
+        Error.prepareStackTrace = orig;
+        return stack;
+    }
+});
+
+Object.defineProperty(global, '__line', {
+get: function() {
+        return __stack[1].getLineNumber();
+    }
+});
+
+Object.defineProperty(global, '__function', {
+get: function() {
+        return __stack[1].getFunctionName();
+    }
+});

@@ -2,33 +2,17 @@ require('./common');
 
 var sqlite3 = require('sqlite3').verbose();
 
-var sync;
+var storage;
 
 describe('odgn-entity-sqlite', function(){
     before( function(done){
-        this.sync = sync = require('../')(odgn,{filename:'entity.sqlite'});
-        odgn.entity.EntityRegistry.use( this.sync );
+        this.registry = odgn.entity.Registry.create();
+        this.storage = storage = require('../');//(odgn,{filename:'entity.sqlite'});
+        this.registry.use( this.storage, {filename:'entity.sqlite'} );
+
         done();
     });
 
-    var createEntityRegistry = function(options, callback){
-        if( arguments.length == 1 ){
-            callback = options;
-            options = {};
-        }
-        var eRegistry = odgn.entity.EntityRegistry.create();
-
-        var init = function(){
-            eRegistry.initialise( function(err, registry){
-                callback(err,registry);
-            });    
-        }
-
-        if( options.clearAll )
-            return sync.util.clearAll(init);
-
-        return init();
-    };
 
     describe('main', function(){
         
@@ -53,7 +37,7 @@ describe('odgn-entity-sqlite', function(){
                 "primaryKey":"id"
             });
 
-            assert.equal( this.sync.Schema.toSql('/schema/entity'),
+            assert.equal( this.sync.Schema.toCreate('/schema/entity'),
                 'CREATE TABLE IF NOT EXISTS tbl_entity( id INTEGER PRIMARY KEY, _status INTEGER, _created_at DATETIME DEFAULT CURRENT_TIMESTAMP, _created_by INTEGER, _updated_at DATETIME DEFAULT CURRENT_TIMESTAMP, _updated_by INTEGER);');
         });
 
@@ -67,7 +51,7 @@ describe('odgn-entity-sqlite', function(){
                 }
             });
 
-            log.debug( this.sync.Schema.toSql(schemaId) );
+            log.debug( this.sync.Schema.toCreate(schemaId) );
 
         });
     });
@@ -79,24 +63,22 @@ describe('odgn-entity-sqlite', function(){
 
         it('should create a new entity with an id', function(done){
             var self = this;
-
-            var eRegistry = odgn.entity.EntityRegistry.create();
-            var entityId;
+            var entityId, eRegistry;
 
             async.waterfall([
                 function(cb){
-                    eRegistry.initialise(cb);                    
+                    odgn.entity.EntityRegistry.create({clearAll:true},cb);
                 },
-                function(cb){
-                    eRegistry.createEntity(cb);
+                function(registry,cb){
+                    (eRegistry = registry).createEntity(cb);
                 },
                 function(entity,cb){
-                    log.debug('created entity ' + entity.id );
                     entityId = entity.id;
                     assert( entity.id );    
-                    eRegistry.read( entity.id, cb );
+                    eRegistry.readEntity( entity.id, cb );
                 },
             ], function(err,entity){
+                if( err ){ return log.error(err); }
                 assert.equal( entity.id, entityId );
                 done(); 
             });
@@ -104,11 +86,35 @@ describe('odgn-entity-sqlite', function(){
     });
 
     describe('Component', function(){
-        it('should register a component', function(done){
+        it.only('should register a component', function(done){
             var self = this;
+            var cRegistry;
+            var componentDef = {
+                "id":"/component/data",
+                "type":"object",
+                "properties":{
+                    "name":{ "type":"string" },
+                    "count":{ "type":"integer" }
+                }
+            };
 
-            createEntityRegistry({clearAll:true}, function(err, registry){
-                done()
+            async.waterfall([
+                function(cb){
+                    // create a new registry instance
+                    self.registry.initialise({clearAll:true}, cb);
+                },
+                function(registry,cb){
+                    (cRegistry = registry).registerComponent(componentDef,cb);
+                },
+                function( registry,cb ){
+                    cRegistry.createComponent('/component/data', {'name':'diamond', 'count':23}, cb );
+                }
+            ], function(err,component){
+                if( err ) log.error( err );
+                print_ins( arguments );
+                assert.equal( component.get("name"), "diamond" );
+                assert.equal( component.get("count"), 23 );
+                done();
             });
         });
     });
