@@ -104,6 +104,7 @@ describe('odgn-entity-sqlite', function(){
                     self.registry.initialise({clearAll:true}, cb);
                 },
                 function(registry,cb){
+                    log.debug('now registering');
                     (cRegistry = registry).registerComponent(componentDef,cb);
                 },
                 function( registry,cb ){
