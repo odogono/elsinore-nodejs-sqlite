@@ -8,6 +8,7 @@ describe('odgn-entity-sqlite', function(){
     before( function(done){
         this.registry = odgn.entity.Registry.create();
         this.storage = storage = require('../');//(odgn,{filename:'entity.sqlite'});
+
         this.registry.use( this.storage, {filename:'entity.sqlite'} );
 
         done();
@@ -101,10 +102,45 @@ describe('odgn-entity-sqlite', function(){
             async.waterfall([
                 function(cb){
                     // create a new registry instance
+                    log.debug('1 initialising registry');
                     self.registry.initialise({clearAll:true}, cb);
                 },
                 function(registry,cb){
-                    log.debug('now registering');
+                    log.debug('2 registering component');
+                    (cRegistry = registry).registerComponent(componentDef,cb);
+                },
+                function( registry,cb ){
+                    registry.getComponentDef('/component/data', cb );
+                }
+            ], function(err,def){
+                if( err ) log.error( err );
+                print_ins( def );
+                // assert.equal( component.get("name"), "diamond" );
+                // assert.equal( component.get("count"), 23 );
+                done();
+            });
+        });
+    });
+
+    describe('Component', function(){
+        it('should create a component from a def', function(done){
+            var self = this;
+            var cRegistry;
+            var componentDef = {
+                "id":"/component/data",
+                "type":"object",
+                "properties":{
+                    "name":{ "type":"string" },
+                    "count":{ "type":"integer" }
+                }
+            };
+
+            async.waterfall([
+                function(cb){
+                    // create a new registry instance
+                    self.registry.initialise({clearAll:true}, cb);
+                },
+                function(registry,cb){
                     (cRegistry = registry).registerComponent(componentDef,cb);
                 },
                 function( registry,cb ){
@@ -112,12 +148,10 @@ describe('odgn-entity-sqlite', function(){
                 }
             ], function(err,component){
                 if( err ) log.error( err );
-                print_ins( arguments );
                 assert.equal( component.get("name"), "diamond" );
                 assert.equal( component.get("count"), 23 );
                 done();
             });
         });
     });
-
 });
