@@ -9,7 +9,7 @@ describe('odgn-entity-sqlite', function(){
         this.registry = odgn.entity.Registry.create();
         this.storage = storage = require('../');//(odgn,{filename:'entity.sqlite'});
 
-        this.registry.use( this.storage, {filename:'entity.sqlite'} );
+        this.registry.use( this.storage, {filename:'entity.sqlite', clearAll:true} );
 
         done();
     });
@@ -109,8 +109,10 @@ describe('odgn-entity-sqlite', function(){
                     log.debug('2 registering component');
                     (cRegistry = registry).registerComponent(componentDef,cb);
                 },
-                function( registry,cb ){
-                    registry.getComponentDef('/component/data', cb );
+                function( componentDef,cb ){
+                    var def = cRegistry.getComponentDef('/component/data', cb );
+                    assert(def);
+                    assert.equal( componentDef.id, def.id );
                 }
             ], function(err,def){
                 if( err ) log.error( err );
