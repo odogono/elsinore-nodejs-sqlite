@@ -2,158 +2,97 @@ require('./common');
 
 var sqlite3 = require('sqlite3').verbose();
 
-var storage;
+var Storage = require('../');
 
 describe('odgn-entity-sqlite', function(){
-    before( function(done){
-        this.registry = odgn.entity.Registry.create();
-        this.storage = storage = require('../');//(odgn,{filename:'entity.sqlite'});
-
-        this.registry.use( this.storage, {filename:'entity.sqlite', clearAll:true} );
-
-        done();
+    beforeEach( function(done){
+        var self = this;
+        this.registry = odgnEntity.Registry.create({initialize:true, storage:Storage, filename:'ecs.sqlite', clearAll:true}, function(err,registry){
+            self.registry = registry;
+            // registry.useStorage( Storage, {filename:'ecs.sqlite', clearAll:true}, function(err, storage){
+                // self.registry.on('component:register', function(componentDef){
+                //     log.debug('registry registered component: ' + componentDef.schema.id + '(' + componentDef.id + ')');
+                // });
+                var components = JSON.parse( fs.readFileSync( Common.pathFixture('components.json') ) );
+                self.registry.registerComponent( components, null, function(){
+                    done();
+                });    
+            // });
+        });
     });
-
 
     describe('main', function(){
         
-    });
-
-    describe('Schema', function(){
-
-        it('should convert a schema to sql', function(){
-
-            this.sync.Schema.register({
-                "id":"/schema/entity",
-                "title":"entity",
-                "type":"object",
-                "properties":{
-                    "id":{ "type":"integer" },
-                    "_status":{ "type":"integer" },
-                    "_created_at":{ "type":"string", "format":"date-time" },
-                    "_created_by":{ "type":"integer" },
-                    "_updated_at":{ "type":"string", "format":"date-time" },
-                    "_updated_by":{ "type":"integer" },
-                },
-                "primaryKey":"id"
-            });
-
-            assert.equal( this.sync.Schema.toCreate('/schema/entity'),
-                'CREATE TABLE IF NOT EXISTS tbl_entity( id INTEGER PRIMARY KEY, _status INTEGER, _created_at DATETIME DEFAULT CURRENT_TIMESTAMP, _created_by INTEGER, _updated_at DATETIME DEFAULT CURRENT_TIMESTAMP, _updated_by INTEGER);');
-        });
-
-        it('should convert another', function(){
-            var schemaId = this.sync.Schema.register({
-                "id":"/component/data",
-                "type":"object",
-                "properties":{
-                    "name":{ "type":"string" },
-                    "count":{ "type":"integer" }
-                }
-            });
-
-            log.debug( this.sync.Schema.toCreate(schemaId) );
-
-        });
-    });
-
-    
-    
-
-    describe('Entity', function(){
-
-        it('should create a new entity with an id', function(done){
-            var self = this;
-            var entityId, eRegistry;
-
+        // it('should have registered components', function(done){
+        //     var self = this, registry = self.registry, eid;
+        //     registry.createEntity( function(err, entity){
+        //         registry.hasEntity( entity.id, function(err,entityId){
+        //             assert.equal( entity.id, entityId );
+        //             done();
+        //         });
+        //     });
+        // });
+        /*
+        it('should add a component to an entity', function(done){
+            var self = this, entity;
             async.waterfall([
                 function(cb){
-                    odgn.entity.EntityRegistry.create({clearAll:true},cb);
+                    self.registry.createEntity(cb);
                 },
-                function(registry,cb){
-                    (eRegistry = registry).createEntity(cb);
+                function(pEntity,cb){
+                    entity = pEntity;
+                    entity.addComponent("/component/name", cb);
                 },
-                function(entity,cb){
-                    entityId = entity.id;
-                    assert( entity.id );    
-                    eRegistry.readEntity( entity.id, cb );
-                },
-            ], function(err,entity){
-                if( err ){ return log.error(err); }
-                assert.equal( entity.id, entityId );
-                done(); 
-            });
-        });
-    });
-
-    describe('Component', function(){
-        it.only('should register a component', function(done){
-            var self = this;
-            var cRegistry;
-            var componentDef = {
-                "id":"/component/data",
-                "type":"object",
-                "properties":{
-                    "name":{ "type":"string" },
-                    "count":{ "type":"integer" }
+                function(pComponent,pEntity,cb){
+                    assert( odgnEntity.Component.isComponent(pComponent) );
+                    // note - getting a component direct from the entity is
+                    // not a great way to do it. better from an entityset
+                    pEntity.getComponent('/component/name', cb);
                 }
-            };
-
-            async.waterfall([
-                function(cb){
-                    // create a new registry instance
-                    log.debug('1 initialising registry');
-                    self.registry.initialise({clearAll:true}, cb);
-                },
-                function(registry,cb){
-                    log.debug('2 registering component');
-                    (cRegistry = registry).registerComponent(componentDef,cb);
-                },
-                function( componentDef,cb ){
-                    var def = cRegistry.getComponentDef('/component/data', cb );
-                    assert(def);
-                    assert.equal( componentDef.id, def.id );
-                }
-            ], function(err,def){
-                if( err ) log.error( err );
-                print_ins( def );
-                // assert.equal( component.get("name"), "diamond" );
-                // assert.equal( component.get("count"), 23 );
+            ], function(err, pComponent,pEntity){
+                assert( pComponent );
                 done();
             });
-        });
-    });
+        });//*/
 
-    describe('Component', function(){
-        it('should create a component from a def', function(done){
+        it('create an entity from a template', function(done){
             var self = this;
-            var cRegistry;
-            var componentDef = {
-                "id":"/component/data",
+            var entityTemplate = {
+                "id":"/entity/template/example",
                 "type":"object",
                 "properties":{
-                    "name":{ "type":"string" },
-                    "count":{ "type":"integer" }
+                    "a":{ "$ref":"/component/tmpl/a" },
+                    "c":{ "$ref":"/component/tmpl/c" },
                 }
             };
+            var entity;
 
             async.waterfall([
                 function(cb){
-                    // create a new registry instance
-                    self.registry.initialise({clearAll:true}, cb);
+                    self.registry.registerComponent([ "/component/tmpl/a", "/component/tmpl/b", "/component/tmpl/c" ], null, cb);
                 },
-                function(registry,cb){
-                    (cRegistry = registry).registerComponent(componentDef,cb);
+                function(components, cb){
+                    self.registry.registerEntityTemplate( entityTemplate, null, cb);
                 },
-                function( registry,cb ){
-                    cRegistry.createComponent('/component/data', {'name':'diamond', 'count':23}, cb );
-                }
-            ], function(err,component){
-                if( err ) log.error( err );
-                assert.equal( component.get("name"), "diamond" );
-                assert.equal( component.get("count"), 23 );
-                done();
+                function( defs, cb ){
+                    self.registry.createEntityFromTemplate( '/entity/template/example', cb );
+                },
+                function(result, cb){
+                    entity = result;
+                    self.registry.getEntitiesWithComponents('/component/tmpl/c', cb);
+                },
+                function( pEntities,pComponentDefs, cb){
+                    assert.equal( pEntities.length, 1 );
+                    assert.equal( pEntities[0].id, entity.id );
+                    // retrieve all the components for this entity
+                    self.registry.getEntityComponents( entity, {}, cb );
+                },
+            ], function(err, components){
+                assert.equal( components[0].schemaId, '/component/tmpl/a' );
+                assert.equal( components[1].schemaId, '/component/tmpl/c' );
+                done();  
             });
         });
+
     });
 });
