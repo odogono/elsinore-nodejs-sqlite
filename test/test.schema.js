@@ -2,16 +2,17 @@ require('./common');
 
 var sqlite3 = require('sqlite3').verbose();
 
-var storage;
+var Storage = require('../');
+var Schema = require('../lib/schema');
+
 
 describe('odgn-entity-sqlite', function(){
-    before( function(done){
-        this.registry = odgn.entity.Registry.create();
-        this.storage = storage = require('../');//(odgn,{filename:'entity.sqlite'});
-
-        this.registry.use( this.storage, {filename:'entity.sqlite', clearAll:true} );
-
+    beforeEach( function(done){
+        // var self = this;
+        // this.registry = odgnEntity.Registry.create({initialize:true}, function(err,registry){
+        //     self.registry = registry;
         done();
+        // });
     });
 
     describe('main', function(){
@@ -20,6 +21,33 @@ describe('odgn-entity-sqlite', function(){
 
     describe('Schema', function(){
 
+        it('should create a basic select statement from a schema', function(){
+            var stub = statementStub( 'tbl_test', 'SELECT * FROM tbl_test' );
+            var statement = Schema.toSelect('/component/test');
+            stub.restore();
+        });
+
+        it('should obey the limit parameter', function(){
+            var stub = statementStub( 'tbl_test', 'SELECT * FROM tbl_test LIMIT 1' );
+            var statement = Schema.toSelect('/component/test', {limit:1} );
+            stub.restore();
+        });
+
+        it('should create a basic select with where statement from a schema', function(){
+            var stub = statementStub( 'tbl_test', 'SELECT * FROM tbl_test WHERE id=?', null, [45] );
+
+            var statement = Schema.toSelect('/component/test', {where:{id:45}} );
+            stub.restore();
+        });
+
+
+        it('should create a select with specified values', function(){
+            var stub = statementStub( 'tbl_test', 'SELECT alpha,beta FROM tbl_test' );
+            var statement = Schema.toSelect('/component/test', {columns:['alpha','beta']} );
+            stub.restore();
+        }); 
+
+        /*
         it('should convert a schema to sql', function(){
 
             this.sync.Schema.register({
@@ -53,103 +81,122 @@ describe('odgn-entity-sqlite', function(){
 
             log.debug( this.sync.Schema.toCreate(schemaId) );
 
-        });
+        });//*/
     });
 
     
     
 
-    describe('Entity', function(){
+    // describe('Entity', function(){
 
-        it('should create a new entity with an id', function(done){
-            var self = this;
-            var entityId, eRegistry;
+    //     it('should create a new entity with an id', function(done){
+    //         var self = this;
+    //         var entityId, eRegistry;
 
-            async.waterfall([
-                function(cb){
-                    odgn.entity.EntityRegistry.create({clearAll:true},cb);
-                },
-                function(registry,cb){
-                    (eRegistry = registry).createEntity(cb);
-                },
-                function(entity,cb){
-                    entityId = entity.id;
-                    assert( entity.id );    
-                    eRegistry.getEntity( entity.id, cb );
-                },
-            ], function(err,entity){
-                if( err ){ return log.error(err); }
-                assert.equal( entity.id, entityId );
-                done(); 
-            });
-        });
-    });
+    //         async.waterfall([
+    //             function(cb){
+    //                 odgn.entity.EntityRegistry.create({clearAll:true},cb);
+    //             },
+    //             function(registry,cb){
+    //                 (eRegistry = registry).createEntity(cb);
+    //             },
+    //             function(entity,cb){
+    //                 entityId = entity.id;
+    //                 assert( entity.id );    
+    //                 eRegistry.getEntity( entity.id, cb );
+    //             },
+    //         ], function(err,entity){
+    //             if( err ){ return log.error(err); }
+    //             assert.equal( entity.id, entityId );
+    //             done(); 
+    //         });
+    //     });
+    // });
 
-    describe('Component', function(){
-        it.only('should register a component', function(done){
-            var self = this;
-            var cRegistry;
-            var componentDef = {
-                "id":"/component/data",
-                "type":"object",
-                "properties":{
-                    "name":{ "type":"string" },
-                    "count":{ "type":"integer" }
-                }
-            };
+    // describe('Component', function(){
+    //     it.only('should register a component', function(done){
+    //         var self = this;
+    //         var cRegistry;
+    //         var componentDef = {
+    //             "id":"/component/data",
+    //             "type":"object",
+    //             "properties":{
+    //                 "name":{ "type":"string" },
+    //                 "count":{ "type":"integer" }
+    //             }
+    //         };
 
-            async.waterfall([
-                function(cb){
-                    // create a new registry instance
-                    log.debug('1 initialising registry');
-                    self.registry.initialise({clearAll:true}, cb);
-                },
-                function(registry,cb){
-                    log.debug('2 registering component');
-                    (cRegistry = registry).registerComponent(componentDef,cb);
-                },
-                function( componentDef,cb ){
-                    log.debug('3 retrieving def');
-                    cRegistry.getComponentDef('/component/data', cb );
-                }
-            ], function(err,def){
-                if( err ) log.error( err );
-                assert.equal( def.id, '/component/data' );
-                done();
-            });
-        });
-    });
+    //         async.waterfall([
+    //             function(cb){
+    //                 // create a new registry instance
+    //                 log.debug('1 initialising registry');
+    //                 self.registry.initialise({clearAll:true}, cb);
+    //             },
+    //             function(registry,cb){
+    //                 log.debug('2 registering component');
+    //                 (cRegistry = registry).registerComponent(componentDef,cb);
+    //             },
+    //             function( componentDef,cb ){
+    //                 log.debug('3 retrieving def');
+    //                 cRegistry.getComponentDef('/component/data', cb );
+    //             }
+    //         ], function(err,def){
+    //             if( err ) log.error( err );
+    //             assert.equal( def.id, '/component/data' );
+    //             done();
+    //         });
+    //     });
+    // });
 
-    describe('Component', function(){
-        it('should create a component from a def', function(done){
-            var self = this;
-            var cRegistry;
-            var componentDef = {
-                "id":"/component/data",
-                "type":"object",
-                "properties":{
-                    "name":{ "type":"string" },
-                    "count":{ "type":"integer" }
-                }
-            };
+    // describe('Component', function(){
+    //     it('should create a component from a def', function(done){
+    //         var self = this;
+    //         var cRegistry;
+    //         var componentDef = {
+    //             "id":"/component/data",
+    //             "type":"object",
+    //             "properties":{
+    //                 "name":{ "type":"string" },
+    //                 "count":{ "type":"integer" }
+    //             }
+    //         };
 
-            async.waterfall([
-                function(cb){
-                    // create a new registry instance
-                    self.registry.initialise({clearAll:true}, cb);
-                },
-                function(registry,cb){
-                    (cRegistry = registry).registerComponent(componentDef,cb);
-                },
-                function( registry,cb ){
-                    cRegistry.createComponent('/component/data', {'name':'diamond', 'count':23}, cb );
-                }
-            ], function(err,component){
-                if( err ) log.error( err );
-                assert.equal( component.get("name"), "diamond" );
-                assert.equal( component.get("count"), 23 );
-                done();
-            });
-        });
-    });
+    //         async.waterfall([
+    //             function(cb){
+    //                 // create a new registry instance
+    //                 self.registry.initialise({clearAll:true}, cb);
+    //             },
+    //             function(registry,cb){
+    //                 (cRegistry = registry).registerComponent(componentDef,cb);
+    //             },
+    //             function( registry,cb ){
+    //                 cRegistry.createComponent('/component/data', {'name':'diamond', 'count':23}, cb );
+    //             }
+    //         ], function(err,component){
+    //             if( err ) log.error( err );
+    //             assert.equal( component.get("name"), "diamond" );
+    //             assert.equal( component.get("count"), 23 );
+    //             done();
+    //         });
+    //     });
+    // });
 });
+
+
+var statementStub = function( tableName, sql, columns, parameters ){
+        return sinon.stub( Schema, '_statementForSchema', function(){
+            return {
+                get: function(){
+                    return tableName;
+                },
+                set: function(key,val){
+                    if( sql && key == 'sql' )
+                        assert.equal( val, sql );
+                    if( columns && key == 'columns' )
+                        assert.deepEqual(val, columns );
+                    if( parameters && key == 'parameters' )
+                        assert.deepEqual(val, parameters );
+                }
+            }
+        })
+    };
