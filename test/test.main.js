@@ -3,12 +3,14 @@ require('./common');
 var sqlite3 = require('sqlite3').verbose();
 
 var Storage = require('../');
+var Schema = require('../lib/schema');
 
 describe('odgn-entity-sqlite', function(){
     beforeEach( function(done){
         var self = this;
         this.registry = odgnEntity.Registry.create({initialize:true, storage:Storage, filename:'ecs.sqlite', clearAll:true}, function(err,registry){
             self.registry = registry;
+            self.storage = registry.storage;
             // registry.useStorage( Storage, {filename:'ecs.sqlite', clearAll:true}, function(err, storage){
                 // self.registry.on('component:register', function(componentDef){
                 //     log.debug('registry registered component: ' + componentDef.schema.id + '(' + componentDef.id + ')');
@@ -21,18 +23,90 @@ describe('odgn-entity-sqlite', function(){
         });
     });
 
-    describe('main', function(){
+    describe.skip('Entity', function(){
+        it('should create a new entity with an id', function(done){
+            var self = this;
+            self.registry.createEntity(function(err,entity){
+                // print_ins( entity.toJSON() );
+                assert( entity.id );
+                done();
+            });
+        });
+    });
+
+
+
+    describe('Component', function(){
+        it('should create a component with supplied attributes', function(done){
+            var self = this;
+            self.registry.createComponent('/component/name', {first_name:'alex', last_name:'veenendaal'}, null, function(err, component){
+                
+                self.storage.retrieveComponent('/component/name', {where:"first_name='alex'"}, function(err, component){
+
+                    assert.equal( component.get('first_name'), 'alex' );
+                    assert.equal( component.get('last_name'), 'veenendaal' );
+
+                    done();    
+                });
+            });
+        });
+
+        it('should create a component with supplied attributes', function(done){
+            var self = this;
+            // log.debug('---')
+            self.registry.createComponent( '/component/name', 
+                [{first_name:'ian', last_name:'palmer', age:45},{first_name:'paul', last_name:'barrett', age:38}]
+                ,null, function(err,component){
+                
+                self.storage.retrieveComponent('/component/name', {where:"last_name='barrett'"}, function(err, component){
+
+                    assert.equal( component.get('first_name'), 'paul' );
+                    assert.equal( component.get('last_name'), 'barrett' );
+                    assert.equal( component.get('age'), 38);
+
+                    done();    
+                });
+
+            });
+        })
+    });
+
+    describe.skip('EntitySet', function(){
+        it('should populate with existing components', function(done){
+            var self = this;
+            var entityId;
+            async.waterfall([
+                function(cb){
+                    self.registry.createEntity(cb);
+                },
+                function(entity,cb){
+                    entity.addComponent('/component/email', cb);
+                },
+                function(pEntity,pComponent,cb){
+                    entityId = pEntity.id;
+                    // create an entityset interested in a single component
+                    self.registry.createEntitySet( {componentDefs:'/component/email'}, cb );
+                }
+            ], function(err,pEntitySet){
+                if( err ) throw err;
+                assert( pEntitySet.hasEntity( entityId ) );
+                done(); 
+            });
+        });
+    });
+
+    describe.skip('main', function(){
         
-        // it('should have registered components', function(done){
-        //     var self = this, registry = self.registry, eid;
-        //     registry.createEntity( function(err, entity){
-        //         registry.hasEntity( entity.id, function(err,entityId){
-        //             assert.equal( entity.id, entityId );
-        //             done();
-        //         });
-        //     });
-        // });
-        /*
+        it('should have registered components', function(done){
+            var self = this, registry = self.registry, eid;
+            registry.createEntity( function(err, entity){
+                registry.hasEntity( entity.id, function(err,entityId){
+                    assert.equal( entity.id, entityId );
+                    done();
+                });
+            });
+        });
+        
         it('should add a component to an entity', function(done){
             var self = this, entity;
             async.waterfall([
@@ -53,7 +127,7 @@ describe('odgn-entity-sqlite', function(){
                 assert( pComponent );
                 done();
             });
-        });//*/
+        });
 
         it('create an entity from a template', function(done){
             var self = this;

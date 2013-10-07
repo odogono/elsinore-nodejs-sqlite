@@ -4,7 +4,7 @@ var sqlite3 = require('sqlite3').verbose();
 
 var Storage = require('../');
 var Schema = require('../lib/schema');
-
+var SqlStatement = Schema.SqlStatement;
 
 describe('odgn-entity-sqlite', function(){
     beforeEach( function(done){
@@ -17,6 +17,15 @@ describe('odgn-entity-sqlite', function(){
 
     describe('main', function(){
         
+    });
+
+    describe('SqlStatement', function(){
+        // it('should assign the sql attribute', function(){
+        //     var stat = new SqlStatement();
+        //     stat.set( 'sql', 'SELECT * from tbl_test' );
+        //     print_ins( stat );
+        //     assert.equal( stat.get('sql'), 'SELECT * from tbl_test' );
+        // })
     });
 
     describe('Schema', function(){

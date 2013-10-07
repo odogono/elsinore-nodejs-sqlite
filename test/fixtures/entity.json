@@ -1,0 +1,26 @@
+{
+    "entity_id":6034,
+
+    "components":[
+        {
+            "id":"/component/email",
+
+            "email":"ecs@opendoorgonorth.com",
+            "verified_at":"2013-10-06T11:36:16.858Z"
+        },
+        {
+            "id":"/component/password",
+
+            "password":"DEADBEEF",
+            "salt":"CAFEBABE",
+            "iterations":500
+        },
+        {
+            "id":"/component/name",
+            
+            "first_name":"danny",
+            "last_name":"elfman",
+            "age":51
+        }
+    ]
+}
