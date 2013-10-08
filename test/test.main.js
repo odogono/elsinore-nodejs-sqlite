@@ -23,6 +23,8 @@ describe('odgn-entity-sqlite', function(){
         });
     });
 
+    
+
     describe.skip('Entity', function(){
         it('should create a new entity with an id', function(done){
             var self = this;
@@ -34,7 +36,7 @@ describe('odgn-entity-sqlite', function(){
         });
     });
 
-    describe('Entity Import', function(){
+    describe.skip('Entity Import', function(){
         it('should load an entity and its components from data', function(done){
             var self = this;
             var data = JSON.parse( fs.readFileSync( Common.pathFixture('entity.json') ) );
@@ -42,7 +44,7 @@ describe('odgn-entity-sqlite', function(){
             //     log.debug('registry evt ' + evt);
             // });
             self.registry.importEntity( data, null, function(err, entity){
-                
+
                 return entity.getComponent('/component/name', function(err,component,entity){
                     assert.equal( component.get('first_name'), 'dummy' );
                     assert.equal( component.get('last_name'), 'testman');
