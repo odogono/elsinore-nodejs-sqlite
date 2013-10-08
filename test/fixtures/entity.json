@@ -1,25 +1,26 @@
 {
     "entity_id":6034,
+    "description":"a test entity definition ready for importing",
 
     "components":[
         {
-            "id":"/component/email",
+            "schemaId":"/component/email",
 
             "email":"ecs@opendoorgonorth.com",
             "verified_at":"2013-10-06T11:36:16.858Z"
         },
         {
-            "id":"/component/password",
+            "schemaId":"/component/password",
 
             "password":"DEADBEEF",
             "salt":"CAFEBABE",
             "iterations":500
         },
         {
-            "id":"/component/name",
+            "schemaId":"/component/name",
             
-            "first_name":"danny",
-            "last_name":"elfman",
+            "first_name":"dummy",
+            "last_name":"testman",
             "age":51
         }
     ]

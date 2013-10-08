@@ -34,9 +34,74 @@ describe('odgn-entity-sqlite', function(){
         });
     });
 
+    describe('Entity Import', function(){
+        it('should load an entity and its components from data', function(done){
+            var self = this;
+            var data = JSON.parse( fs.readFileSync( Common.pathFixture('entity.json') ) );
+            // self.registry.on('all', function(evt){
+            //     log.debug('registry evt ' + evt);
+            // });
+            self.registry.importEntity( data, null, function(err, entity){
+                
+                return entity.getComponent('/component/name', function(err,component,entity){
+                    assert.equal( component.get('first_name'), 'dummy' );
+                    assert.equal( component.get('last_name'), 'testman');
+                    assert.equal( component.get('age'), 51 );
+                    done();
+                });
+            });
+        });
+    });
+
+    describe.skip('Entity Components', function(){
+        it('should add a component to an entity', function(done){
+            var self = this, entity;
+            async.waterfall([
+                function(cb){
+                    self.registry.createEntity(cb);
+                },
+                function(pEntity,cb){
+                    entity = pEntity;
+                    entity.addComponent("/component/email", cb);
+                },
+                function(pComponent,pEntity,cb){
+                    assert( odgnEntity.Component.isComponent(pComponent) );
+                    // note - getting a component direct from the entity is
+                    // not a great way to do it. better from an entityset
+                    pEntity.getComponent('/component/email', cb);
+                }
+            ], function(err, pComponent,pEntity){
+                assert( pComponent );
+                done();
+            });
+        });
+
+        it('should add a serialised component to an entity', function(done){
+            var self = this, entity;
+            async.waterfall([
+                function(cb){
+                    self.registry.createEntity(cb);
+                },
+                function(pEntity,cb){
+                    entity = pEntity;
+                    entity.addComponent({schemaId:"/component/email", email:"alex@odogono.com", "is_allowed":true}, cb);
+                },
+                function(pComponent,pEntity,cb){
+                    assert( odgnEntity.Component.isComponent(pComponent) );
+                    // note - getting a component direct from the entity is
+                    // not a great way to do it. better from an entityset
+                    pEntity.getComponent('/component/email', cb);
+                }
+            ], function(err, pComponent,pEntity){
+                assert.equal( pComponent.get("email"), "alex@odogono.com" );
+                assert.equal( pComponent.get("is_allowed"), true );
+                done();
+            });
+        });
+    });
 
 
-    describe('Component', function(){
+    describe.skip('Component', function(){
         it('should create a component with supplied attributes', function(done){
             var self = this;
             self.registry.createComponent('/component/name', {first_name:'alex', last_name:'veenendaal'}, null, function(err, component){
