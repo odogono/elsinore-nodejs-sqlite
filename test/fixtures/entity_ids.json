@@ -1,0 +1,14 @@
+[
+    {
+        "id":100,
+        "components":[
+            { "schemaId":"/component/content_set", "name":"Content Set A" }
+        ]
+    },
+    {
+        "id":101,
+        "components":[
+            { "schemaId":"/component/content_set", "name":"Content Set B" }
+        ]
+    }
+]

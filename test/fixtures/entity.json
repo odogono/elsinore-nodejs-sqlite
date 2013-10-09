@@ -10,6 +10,10 @@
             "verified_at":"2013-10-06T11:36:16.858Z"
         },
         {
+            "schemaId":"/component/status",
+            "status":0
+        },
+        {
             "schemaId":"/component/password",
 
             "password":"DEADBEEF",

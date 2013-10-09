@@ -1,0 +1,141 @@
+[
+    {
+        "id":"/component/status",
+        "properties":{
+            "status":{ "type":"integer", "enum":[ 0, 1, 2 ] }
+        }
+    },
+    {
+        "id":"/component/password",
+        "properties":{
+            "password":{ "type":"string" },
+            "salt":{ "type":"string" },
+            "iterations":{ "type":"integer" }
+        }
+    },
+
+    {
+        "id":"/component/email",
+        "properties":{
+            "email":{ "type":"string", "format":"email" },
+            "type":{ "type":"string", "description":"type of email address (home, work,etc)" },
+            "verified_at":{ "type":"string", "format":"date-time" }
+        }
+    },
+
+    {
+        "id":"/component/name",
+        "properties":{
+            "first_name":{ "type":"string" },
+            "last_name":{ "type":"string" }
+        }
+    },
+
+    {
+        "id":"/component/content_set",
+        "description":"a content set",
+        "properties":{
+            "uuid":{ "type":"string", "format":"uuid" },
+            "code":{ "type":"string" },
+            "name":{ "type":"string" },
+            "type":{ "type":"string" }
+        }
+    },
+
+    {
+        "id":"/component/content_set_member",
+        "properties":{
+            "content_set_id":{ "type":"integer", "description":"refers to the content set entity" },
+            "content_set_code":{ "type":"string" }
+        }
+    },
+
+    {
+        "id":"/component/poi",
+        "description":"a remote feed URL source",
+
+        "properties":{
+            "title":{ "type":"string" },
+            "text_short":{ "type":"string" },
+            "text":{ "type":"string" },
+            "address":{ "type":"string" },
+            "postcode":{ "type":"string" }
+        }
+    },
+
+    {
+        "id":"/component/feed",
+        "description":"a remote feed URL source",
+
+        "properties":{
+            "url":{ "type":"string" },
+            "description":{"type":"string"},
+            "last_updated":{ "type":"string", "format":"date-time" }
+        }
+    },
+
+    {
+        "id":"/component/content",
+        "description":"a record containing arbitrary content type",
+
+        "properties":{
+            "data":{ "type":"string" },
+            "path":{ "type":"string", "description":"relative path in the package"},
+            "type":{ "type":"string", "enum":[ "text", "template", "launch_page" ] }
+        }
+    },
+
+    {
+        "id":"/component/package",
+        "description":"a package to which this data is published",
+
+        "properties":{
+            "package_id":{ "type":"string" },
+            "version":{ "type":"string", "description":"current published version of the package" },
+            "type":{"type":"string", "enum":[ "staging", "live" ]}
+        }
+    },
+
+    {
+        "id":"/component/image",
+        "description":"",
+
+        "properties":{
+            "filename":{"type":"string", "description":"hashed filename of the file"},
+            "dimensions":{ "type":"array" },
+            "image_type":{ "type":"string" },
+            "type":{ "type":"string", "enum":[ "misc", "icon", "detail" ] }
+        }
+    },
+
+    {
+        "id":"/component/image/detail",
+        "description":"",
+
+        "properties":{
+            "filename":{"type":"string", "description":"hashed filename of the file"},
+            "dimensions":{ "type":"array" },
+            "image_type":{ "type":"string" }
+        }
+    },
+
+    {
+        "id":"/component/geo_location",
+        "description": "A geographical coordinate",
+        "properties":{
+            "lat": { "type": "number", "description":"latitude" },
+            "lon": { "type": "number", "description":"longitude" },
+            "accuracy": { "type":"number" },
+            "radius":{ "type":"number" }
+        }
+    },
+
+    {
+        "id":"/component/geo_fence",
+        "description":"describes a geofence",
+        "properties":{
+            "on_enter":{"type":"string", "format":"url", "description":"url that the app launches on entry" },
+            "on_exit":{"type":"string", "format":"url", "description":"url that the app launches on exit" }
+        }
+    }
+]

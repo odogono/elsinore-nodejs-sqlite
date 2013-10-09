@@ -23,7 +23,6 @@ describe('odgn-entity-sqlite', function(){
         });
     });
 
-    
 
     describe.skip('Entity', function(){
         it('should create a new entity with an id', function(done){
@@ -37,7 +36,7 @@ describe('odgn-entity-sqlite', function(){
     });
 
     describe.skip('Entity Import', function(){
-        it('should load an entity and its components from data', function(done){
+        it.skip('should load an entity and its components from data', function(done){
             var self = this;
             var data = Common.readFixture('entity.json',true);
             // self.registry.on('all', function(evt){
@@ -137,7 +136,7 @@ describe('odgn-entity-sqlite', function(){
         })
     });
 
-    describe('EntitySet', function(){
+    describe.skip('EntitySet', function(){
         it.skip('should populate with existing components', function(done){
             var self = this;
             var entityId;

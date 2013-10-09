@@ -21,6 +21,16 @@ describe('odgn-entity-sqlite', function(){
     });//*/
 
     describe('Entity', function(){
+
+        it('should', function(done){
+            initRegistryWithComponentsAndImport(
+                'test.sqlite', 'components.set_a.json', 'entity.import.a.json', 
+                function(err,registry,storage){
+                    log.debug('ok');
+                    done();
+                });
+        })
+
         it.skip('should initialise from existing', function(done){
             var self = this;
 
@@ -52,7 +62,7 @@ describe('odgn-entity-sqlite', function(){
             });
         });
 
-        it('should initialise from existing', function(done){
+        it.skip('should initialise from existing', function(done){
             var self = this;
             var sqlitePath = Common.pathVar('ecs.sqlite');
             Storage.loadSql( sqlitePath, fs.readFileSync( Common.pathFixture('basic.sql')).toString(), function(err, storage){
@@ -70,8 +80,6 @@ describe('odgn-entity-sqlite', function(){
 
                 });
             });
-
-            
         });
 
     });

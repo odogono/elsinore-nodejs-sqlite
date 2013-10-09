@@ -110,3 +110,17 @@ global.initRegistryWithSql = function( sqlitePath, sqlFixturePath, callback ){
         });
     });
 };
+
+
+global.initRegistryWithComponentsAndImport = function( sqlitePath, componentPath, importDataPath, callback ){
+    odgnEntity.Registry.create({initialize:true, storage:Storage, filename:sqlitePath, clearAll:true}, function(err, registry){
+        var components = Common.readFixture( componentPath, true );
+        return registry.registerComponent( components, null, function(){
+
+            var data = Common.readFixture( importDataPath, true);
+            return registry.importEntity( data, null, function(err, entity){
+                return callback( err, registry, registry.storage );
+            });
+        });
+    });
+}

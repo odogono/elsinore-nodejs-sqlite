@@ -1,5 +1,32 @@
 [
     {
+        "id":"/component/password",
+        "properties":{
+            "password":{ "type":"string" },
+            "salt":{ "type":"string" },
+            "iterations":{ "type":"integer" }
+        }
+    },
+
+    {
+        "id":"/component/email",
+        "properties":{
+            "email":{ "type":"string", "format":"email" },
+            "type":{ "type":"string", "description":"type of email address (home, work,etc)" },
+            "verified_at":{ "type":"string", "format":"date-time" }
+        }
+    },
+
+    {
+        "id":"/component/name",
+        "properties":{
+            "first_name":{ "type":"string" },
+            "last_name":{ "type":"string" }
+        },
+
+        "additionalProperties":true
+    },
+    {
         "id":"/component/content_set",
         "properties":{
             "code":{ "type":"string" },

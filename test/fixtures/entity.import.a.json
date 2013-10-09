@@ -1,0 +1,109 @@
+[
+    {
+        "description":"admin user",
+
+        "components":[
+            {
+                "schemaId":"/component/email",
+
+                "email":"admin@now2now.com",
+                "verified_at":"2013-10-06T11:36:16.858Z"
+            },
+            {
+                "schemaId":"/component/status",
+                "status":0
+            },
+            {
+                "schemaId":"/component/password",
+
+                "password":"3rZeUOPk4Z/xWhbtEwuas8yY0kqj1In1alh2AobkNy822KKdaiHd61ZG2tvZRdI9QRopMchLyQrcbvE4znyqP8WDQqxU9Usx0zNdCGOHXWaoTXHuF667bsmE03QK9oJgAjLe/SJXDTpFBGIxJq+fgN4PVZJW9W/FkaC/7t+qrbw=",
+                "salt":"uqzOFkiG320TXHpLGOPlYDVyYqHZk+yjjGxaLzWN2bzCXyc0UcGF+k4/rhhZkS8yL2RrggPz703KBi2+U9kz/xp9b2YIFFFTtPPXxADV1kAxJnySuKxhg/+YhrLv1jAiob2Ka7fG4DpNlB0RVr/u4D9Y1qb1unmMRE6Y1pYkDV8=",
+                "iterations":500,
+
+                "password_plain":"now2now"
+            },
+            {
+                "schemaId":"/component/name",
+                
+                "first_name":"Administrator",
+                "last_name":"Administrator"
+            }
+        ]
+    },
+    {
+        "description":"user alexv",
+        "components":[
+            {
+                "schemaId":"/component/email",
+
+                "email":"alexv@now2now.com",
+                "verified_at":"2013-10-08T12:50:00.000Z"
+            },
+            {
+                "schemaId":"/component/status",
+                "status":0
+            },
+            {
+                "schemaId":"/component/password",
+
+                "password":"Y9GkkY4O2AqphhgmyNVjb5iBq+cRHBgFpUGkftksBLPpqtPzeLcEjG5xuGz8/vkuBbpvPDvq+X8ELgBqFIOSvsFCp12IGFnU7PIcIy21lY8agjxJ1NVwSnRScePXmOwmb5IJbhVgVYCt3afSPPsoh1pv8WfRbsT7dD9mZeeMc/g=",
+                "salt":"Sq0VSKu293o+oFlk9+OIfU1bQQEwW/Lsw7dLkpBIrzzVhH1YPnEwpRbWJph/I+LZFECyLWpI2LO6k64vBW+uQrCWVUQhi/QIOCBxtnN95VU2UA5yhg8iR2l7E4fwEfMgg4bip1moC4ItSI+/oIT9XPZFyrWtN1lgQ/1Z/sq70es=",
+                "iterations":500,
+
+                "password_plain":"now2now"
+            },
+            {
+                "schemaId":"/component/name",
+                
+                "first_name":"Alexander",
+                "last_name":"Veenendaal"
+            }    
+        ]
+    },
+    {
+        "description":"default meta content set",
+        "components":[
+            {
+                "schemaId":"/component/content_set",
+
+                "code":"mcs",
+                "uuid":"ae27cfa1-a9c6-4f3a-8a16-d43d0869f873",
+                "type":"meta",
+                "name":"Meta Content Set"
+            },
+
+            {
+                "schemaId":"/component/status",
+                "status":0
+            }
+        ]
+    },
+    {
+        "description":"meta content set staging package",
+        "components":[
+            {
+                "schemaId":"/component/package",
+                "package_id":"WN4_MCS_STG",
+                "type":"staging"
+            },
+            {
+                "schemaId":"/component/content_set_member",
+                "content_set_code":"mcs"
+            }
+        ]
+    },
+    {
+        "description":"meta content set live package",
+        "components":[
+            {
+                "schemaId":"/component/package",
+                "package_id":"WN4_MCS_LIVE",
+                "type":"live"
+            },
+            {
+                "schemaId":"/component/content_set_member",
+                "content_set_code":"mcs"
+            }
+        ]
+    }
+]
