@@ -18,7 +18,7 @@ describe('odgn-entity-sqlite', function(){
                 var components = JSON.parse( fs.readFileSync( Common.pathFixture('components.json') ) );
                 self.registry.registerComponent( components, null, function(){
                     done();
-                });    
+                });
             // });
         });
     });
@@ -39,12 +39,11 @@ describe('odgn-entity-sqlite', function(){
     describe.skip('Entity Import', function(){
         it('should load an entity and its components from data', function(done){
             var self = this;
-            var data = JSON.parse( fs.readFileSync( Common.pathFixture('entity.json') ) );
+            var data = Common.readFixture('entity.json',true);
             // self.registry.on('all', function(evt){
             //     log.debug('registry evt ' + evt);
             // });
             self.registry.importEntity( data, null, function(err, entity){
-
                 return entity.getComponent('/component/name', function(err,component,entity){
                     assert.equal( component.get('first_name'), 'dummy' );
                     assert.equal( component.get('last_name'), 'testman');
@@ -138,8 +137,8 @@ describe('odgn-entity-sqlite', function(){
         })
     });
 
-    describe.skip('EntitySet', function(){
-        it('should populate with existing components', function(done){
+    describe('EntitySet', function(){
+        it.skip('should populate with existing components', function(done){
             var self = this;
             var entityId;
             async.waterfall([

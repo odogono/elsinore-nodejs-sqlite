@@ -1,0 +1,100 @@
+[
+    {
+        "id":100,
+        "components":[
+            { "schemaId":"/component/content_set", "code":"CSA", "name":"Content Set A" }
+        ]
+    },
+    {
+        "id":101,
+        "components":[
+            { "schemaId":"/component/content_set", "code":"CSB", "name":"Content Set B" }
+        ]
+    },
+
+    {
+        "components":[
+            { "schemaId":"/component/poi", "title":"poi 001" },
+            { "schemaId":"/component/content_set/member", "content_set_id":100 },
+            { "schemaId":"/component/status", "status":1 },
+            { "schemaId":"/component/geo_location", "lat":51, "lon":-1 }
+        ]
+    },
+    {
+        "components":[
+            { "schemaId":"/component/poi", "title":"poi 002" },
+            { "schemaId":"/component/content_set/member", "content_set_id":100 }
+        ]
+    },
+    {
+        "components":[
+            { "schemaId":"/component/poi", "title":"poi 003" },
+            { "schemaId":"/component/status", "status":0 },
+            { "schemaId":"/component/geo_location", "lat":51.2, "lon":-1.3 }
+        ]
+    },
+    {
+        "components":[
+            { "schemaId":"/component/poi", "title":"poi 004" },
+            { "schemaId":"/component/status", "status":0 },
+            { "schemaId":"/component/content_set/member", "content_set_id":100 }
+        ]
+    },
+    {
+        "components":[
+            { "schemaId":"/component/poi", "title":"poi 005" },
+            { "schemaId":"/component/status", "status":1 },
+            { "schemaId":"/component/content_set/member", "content_set_id":101 },
+            { "schemaId":"/component/geo_location", "lat":50.8, "lon":-0.5 }
+        ]
+    },
+    {
+        "components":[
+            { "schemaId":"/component/poi", "title":"poi 006" },
+            { "schemaId":"/component/status", "status":1 },
+            { "schemaId":"/component/content_set/member", "content_set_id":101 }
+        ]
+    },
+    {
+        "components":[
+            { "schemaId":"/component/poi", "title":"poi 007" },
+            { "schemaId":"/component/status", "status":2 },
+            { "schemaId":"/component/content_set/member", "content_set_id":101 }
+        ]
+    },
+    {
+        "components":[
+            { "schemaId":"/component/poi", "title":"poi 008" },
+            { "schemaId":"/component/status", "status":2 },
+            { "schemaId":"/component/content_set/member", "content_set_id":101 }
+        ]
+    },
+
+    {
+        "components":[
+            { "schemaId":"/component/content", "title":"content 00A" },
+            { "schemaId":"/component/status", "status":0 },
+            { "schemaId":"/component/content_set/member", "content_set_id":101 }
+        ]
+    },
+    {
+        "components":[
+            { "schemaId":"/component/content", "title":"content 00B" },
+            { "schemaId":"/component/content_set/member", "content_set_id":101 },
+            { "schemaId":"/component/geo_location", "lat":49.2, "lon":2.1 }
+        ]
+    },
+    {
+        "components":[
+            { "schemaId":"/component/content", "title":"content 00C" },
+            { "schemaId":"/component/status", "status":0 },
+            { "schemaId":"/component/content_set/member", "content_set_id":100 }
+        ]
+    },
+    {
+        "components":[
+            { "schemaId":"/component/content", "title":"content 00D" },
+            { "schemaId":"/component/content_set/member", "content_set_id":100 }
+        ]
+    }
+]

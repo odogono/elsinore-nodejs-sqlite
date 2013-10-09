@@ -28,7 +28,37 @@ describe('odgn-entity-sqlite', function(){
         // })
     });
 
-    describe('Schema', function(){
+
+    describe('EntitySet', function(){
+
+        it('should', function(done){
+
+            initRegistryWithSql(':memory:', 'content_sets.sql', function(err, registry, storage){
+
+                // log.debug( odgnEntity.Schema.titleFromSchema('/component/content_set/member') );
+                // process.exit();
+
+                var statement = Schema.toComponentSelect( 
+                    [ '/component/poi', '/component/status', 
+                    {schemaId:'/component/content_set/member'},
+                    {schemaId:'/component/content_set', on:'content_set_member.content_set_id=content_set.entity_id', where:{code:'CSB'} }
+                ] );
+                
+                print_ins( statement.getSql() );
+                // print_ins( odgnEntity.Schema.getSchema('/component/content_set') );
+
+                storage.allRows( statement.getSql(), null, function(err,rows){
+                    print_ins( rows );
+                    done();    
+                });
+            });
+
+        });
+        
+
+    });
+
+    describe.skip('Schema', function(){
 
         it('should create a basic select statement from a schema', function(){
             var stub = statementStub( 'tbl_test', 'SELECT * FROM tbl_test' );

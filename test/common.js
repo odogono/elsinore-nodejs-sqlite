@@ -21,6 +21,10 @@ Common.path = function( dir, subPath ){
     return path.join( Common.paths[dir], subPath );
 };
 
+Common.pathVar = function( p ){
+    return path.join( sh.tempdir(), p );
+}
+
 Common.pathFixture = function( subPath ){
     return path.join( Common.paths.fixtures, subPath );
 };
@@ -94,3 +98,15 @@ get: function() {
         return __stack[1].getFunctionName();
     }
 });
+
+global.Storage = require('../');
+global.Schema = require('../lib/schema');
+global.initRegistryWithSql = function( sqlitePath, sqlFixturePath, callback ){
+    var registry, storage;
+    Storage.loadSql( sqlitePath, fs.readFileSync( Common.pathFixture(sqlFixturePath)).toString(), function(err, storage){
+        odgnEntity.Registry.create({initialize:true, storage:storage, filename:sqlitePath}, function(err, registry){
+            if( err ) throw err;
+            return callback( err, registry, registry.storage );
+        });
+    });
+};

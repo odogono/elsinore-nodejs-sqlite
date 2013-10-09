@@ -21,13 +21,15 @@ describe('odgn-entity-sqlite', function(){
     });//*/
 
     describe('Entity', function(){
-        it('should initialise from an existing repo', function(done){
+        it.skip('should initialise from existing', function(done){
             var self = this;
 
             Storage.loadSql( ':memory:', fs.readFileSync( Common.pathFixture('basic.sql')).toString(), function(err, storage){
 
                 self.registry = odgnEntity.Registry.create({initialize:true, storage:storage}, function(err, registry){
                     self.storage = registry.storage;
+
+                    assert( !self.storage.isNew );
 
                     self.storage.retrieveComponent('/component/name', {where:"last_name='fixture'"}, function(err, component){
 
@@ -37,12 +39,41 @@ describe('odgn-entity-sqlite', function(){
 
                         done();    
                     });
-
                 });
-
             });
         });
-        
+
+        it.skip('should initialise from new ', function(done){
+            var self = this;
+            self.registry = odgnEntity.Registry.create({initialize:true, storage:Storage}, function(err, registry){
+                self.storage = registry.storage;
+                assert( self.storage.isNew );
+                done();
+            });
+        });
+
+        it('should initialise from existing', function(done){
+            var self = this;
+            var sqlitePath = Common.pathVar('ecs.sqlite');
+            Storage.loadSql( sqlitePath, fs.readFileSync( Common.pathFixture('basic.sql')).toString(), function(err, storage){
+                // log.info( sqlitePath );
+
+                self.registry = odgnEntity.Registry.create({initialize:true, storage:Storage, filename:sqlitePath}, function(err, registry){
+                    self.storage = registry.storage;
+                    assert( !self.storage.isNew );
+                    
+                    self.storage.retrieveComponent('/component/name', {where:"last_name='fixture'"}, function(err, component){
+                        assert.equal( component.get('first_name'), 'charlie' );
+                        sh.rm( sqlitePath );
+                        done();
+                    });
+
+                });
+            });
+
+            
+        });
+
     });
 
 });

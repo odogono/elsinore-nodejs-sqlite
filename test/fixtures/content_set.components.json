@@ -1,0 +1,53 @@
+[
+    {
+        "id":"/component/content_set",
+        "properties":{
+            "code":{ "type":"string" },
+            "name":{ "type":"string" },
+            "type":{ "type":"integer" }
+        }
+    },
+
+    {
+        "id":"/component/content_set/member",
+        "properties":{
+            "content_set_id":{ "type":"integer" }
+        }
+    },
+
+    {
+        "id":"/component/status",
+        "properties":{
+            "status":{ "type":"integer" }
+        }
+    },
+
+    {
+        "id":"/component/poi",
+        "properties":{
+            "title":{ "type":"string" },
+            "text_short":{ "type":"string" },
+            "text":{ "type":"string" }
+        }
+    },
+
+    {
+        "id":"/component/content",
+        "properties":{
+            "title":{ "type":"string" },
+            "content":{ "type":"string", "format":"json" }
+        }
+    },
+
+    {
+        "id":"/component/geo_location",
+        "description": "A geographical coordinate",
+        "properties":{
+            "lat": { "type": "number", "description":"latitude" },
+            "lon": { "type": "number", "description":"longitude" },
+            "accuracy": { "type":"number" },
+            "radius":{ "type":"number" }
+        }
+    }
+
+]
