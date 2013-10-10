@@ -33,6 +33,8 @@ describe('EntitySet', function(){
                 };
 
                 registry.createEntitySet( esAttrs, {reload:true}, function(err, entitySet){
+
+                    assert.equal( entitySet.get('entity_count'), 4 );
                     // entitySet.forEach( function(entity, es){
                     //     print_ins( es.getComponent('/component/poi', entity).attributes );
                     // });

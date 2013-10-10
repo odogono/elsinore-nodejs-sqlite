@@ -104,7 +104,7 @@ global.Schema = require('../lib/schema');
 global.initRegistryWithSql = function( sqlitePath, sqlFixturePath, callback ){
     var registry, storage;
     Storage.loadSql( sqlitePath, fs.readFileSync( Common.pathFixture(sqlFixturePath)).toString(), function(err, storage){
-        odgnEntity.Registry.create({initialize:true, storage:storage, filename:sqlitePath}, function(err, registry){
+        odgnEntity.Registry.create({initialize:true, storage:storage, verbose:true, filename:sqlitePath}, function(err, registry){
             if( err ) throw err;
             return callback( err, registry, registry.storage );
         });
@@ -113,7 +113,7 @@ global.initRegistryWithSql = function( sqlitePath, sqlFixturePath, callback ){
 
 
 global.initRegistryWithComponentsAndImport = function( sqlitePath, componentPath, importDataPath, callback ){
-    odgnEntity.Registry.create({initialize:true, storage:Storage, filename:sqlitePath, clearAll:true}, function(err, registry){
+    odgnEntity.Registry.create({initialize:true, storage:Storage, verbose:true, filename:sqlitePath, clearAll:true}, function(err, registry){
         var components = Common.readFixture( componentPath, true );
         return registry.registerComponent( components, null, function(){
 
