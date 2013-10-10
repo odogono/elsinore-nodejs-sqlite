@@ -43,7 +43,7 @@ describe('odgn-entity-sqlite', function(){
             //     log.debug('registry evt ' + evt);
             // });
             self.registry.importEntity( data, null, function(err, entity){
-                return entity.getComponent('/component/name', function(err,component,entity){
+                return entity.getComponent('/component/human_name', function(err,component,entity){
                     assert.equal( component.get('first_name'), 'dummy' );
                     assert.equal( component.get('last_name'), 'testman');
                     assert.equal( component.get('age'), 51 );
@@ -104,9 +104,9 @@ describe('odgn-entity-sqlite', function(){
     describe.skip('Component', function(){
         it('should create a component with supplied attributes', function(done){
             var self = this;
-            self.registry.createComponent('/component/name', {first_name:'alex', last_name:'veenendaal'}, null, function(err, component){
+            self.registry.createComponent('/component/human_name', {first_name:'alex', last_name:'veenendaal'}, null, function(err, component){
                 
-                self.storage.retrieveComponent('/component/name', {where:"first_name='alex'"}, function(err, component){
+                self.storage.retrieveComponent('/component/human_name', {where:"first_name='alex'"}, function(err, component){
 
                     assert.equal( component.get('first_name'), 'alex' );
                     assert.equal( component.get('last_name'), 'veenendaal' );
@@ -119,11 +119,11 @@ describe('odgn-entity-sqlite', function(){
         it('should create a component with supplied attributes', function(done){
             var self = this;
             // log.debug('---')
-            self.registry.createComponent( '/component/name', 
+            self.registry.createComponent( '/component/human_name', 
                 [{first_name:'ian', last_name:'palmer', age:45},{first_name:'paul', last_name:'barrett', age:38}]
                 ,null, function(err,component){
                 
-                self.storage.retrieveComponent('/component/name', {where:"last_name='barrett'"}, function(err, component){
+                self.storage.retrieveComponent('/component/human_name', {where:"last_name='barrett'"}, function(err, component){
 
                     assert.equal( component.get('first_name'), 'paul' );
                     assert.equal( component.get('last_name'), 'barrett' );
@@ -186,7 +186,7 @@ describe('odgn-entity-sqlite', function(){
                     assert( odgnEntity.Component.isComponent(pComponent) );
                     // note - getting a component direct from the entity is
                     // not a great way to do it. better from an entityset
-                    pEntity.getComponent('/component/name', cb);
+                    pEntity.getComponent('/component/human_name', cb);
                 }
             ], function(err, pComponent,pEntity){
                 assert( pComponent );

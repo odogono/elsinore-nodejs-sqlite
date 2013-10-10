@@ -42,7 +42,6 @@ describe('EntitySet', function(){
                     assert.equal( entitySet.getComponent( "/component/poi", 106 ).get('title'), 'poi 005');
                     done();
                 });
-
             });
         });
 

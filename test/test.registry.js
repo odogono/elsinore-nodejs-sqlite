@@ -41,7 +41,7 @@ describe('odgn-entity-sqlite', function(){
 
                     assert( !self.storage.isNew );
 
-                    self.storage.retrieveComponent('/component/name', {where:"last_name='fixture'"}, function(err, component){
+                    self.storage.retrieveComponent('/component/human_name', {where:"last_name='fixture'"}, function(err, component){
 
                         assert.equal( component.get('first_name'), 'charlie' );
                         assert.equal( component.get('last_name'), 'fixture' );
@@ -72,7 +72,7 @@ describe('odgn-entity-sqlite', function(){
                     self.storage = registry.storage;
                     assert( !self.storage.isNew );
                     
-                    self.storage.retrieveComponent('/component/name', {where:"last_name='fixture'"}, function(err, component){
+                    self.storage.retrieveComponent('/component/human_name', {where:"last_name='fixture'"}, function(err, component){
                         assert.equal( component.get('first_name'), 'charlie' );
                         sh.rm( sqlitePath );
                         done();
