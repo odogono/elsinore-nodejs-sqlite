@@ -24,7 +24,7 @@ INSERT INTO "tbl_component_content_set_member" VALUES(11,112,100,'{}',0,'2013-10
 DROP TABLE IF EXISTS "tbl_component_def";
 CREATE TABLE tbl_component_def( id INTEGER PRIMARY KEY, uri STRING UNIQUE, schema STRING, status INTEGER, type INTEGER, created_at DATETIME DEFAULT CURRENT_TIMESTAMP, created_by INTEGER, updated_at DATETIME DEFAULT CURRENT_TIMESTAMP, updated_by INTEGER);
 INSERT INTO "tbl_component_def" VALUES(1,'/component/content_set','{"id":"/component/content_set","properties":{"code":{"type":"string"},"name":{"type":"string"},"type":{"type":"integer"}}}',0,0,NULL,NULL,NULL,NULL);
-INSERT INTO "tbl_component_def" VALUES(2,'/component/content_set/member','{"id":"/component/content_set/member","properties":{"content_set_id":{"type":"integer"}}}',0,0,NULL,NULL,NULL,NULL);
+INSERT INTO "tbl_component_def" VALUES(2,'/component/content_set_member','{"id":"/component/content_set_member","properties":{"content_set_id":{"type":"integer"}}}',0,0,NULL,NULL,NULL,NULL);
 INSERT INTO "tbl_component_def" VALUES(3,'/component/status','{"id":"/component/status","properties":{"status":{"type":"integer"}}}',0,0,NULL,NULL,NULL,NULL);
 INSERT INTO "tbl_component_def" VALUES(4,'/component/poi','{"id":"/component/poi","properties":{"title":{"type":"string"},"text_short":{"type":"string"},"text":{"type":"string"}}}',0,0,NULL,NULL,NULL,NULL);
 INSERT INTO "tbl_component_def" VALUES(5,'/component/content','{"id":"/component/content","properties":{"title":{"type":"string"},"content":{"type":"string","format":"json"}}}',0,0,NULL,NULL,NULL,NULL);

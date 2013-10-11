@@ -26,7 +26,7 @@ describe('EntitySet', function(){
                 var esAttrs = {
                     select:[    '/component/poi', 
                                 '/component/status', 
-                                {schemaId:'/component/content_set/member'},
+                                {schemaId:'/component/content_set_member'},
                                 {schemaId:'/component/content_set', 
                                     on:'content_set_member.content_set_id=content_set.entity_id', 
                                     where:{code:'CSB'} }]
