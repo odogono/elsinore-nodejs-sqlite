@@ -101,8 +101,26 @@ describe('odgn-entity-sqlite', function(){
     });
 
 
-    describe.skip('Component', function(){
-        it('should create a component with supplied attributes', function(done){
+    describe('Component', function(){
+
+        it('should', function(done){
+            var self = this;
+            self.registry.createComponent('/component/tags', {tags:[ 'alpha', 'beta', 'gamma' ]}, {debug:true}, function(err, component){
+                
+                // print_ins(component,2);
+                // process.exit();
+                done();
+                // self.storage.retrieveComponent('/component/human_name', {where:"first_name='alex'"}, function(err, component){
+
+                //     assert.equal( component.get('first_name'), 'alex' );
+                //     assert.equal( component.get('last_name'), 'veenendaal' );
+
+                //     done();    
+                // });
+            });
+        });
+
+        it.skip('should create a component with supplied attributes', function(done){
             var self = this;
             self.registry.createComponent('/component/human_name', {first_name:'alex', last_name:'veenendaal'}, null, function(err, component){
                 
@@ -116,7 +134,7 @@ describe('odgn-entity-sqlite', function(){
             });
         });
 
-        it('should create a component with supplied attributes', function(done){
+        it.skip('should create a component with supplied attributes', function(done){
             var self = this;
             // log.debug('---')
             self.registry.createComponent( '/component/human_name', 

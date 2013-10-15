@@ -25,5 +25,12 @@
         },
 
         "additionalProperties":true
+    },
+
+    {
+        "id":"/component/tags",
+        "properties":{
+            "tags":{ "type":"string", "format":"json" }
+        }
     }
 ]
