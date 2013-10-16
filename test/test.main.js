@@ -127,7 +127,7 @@ describe('odgn-entity-sqlite', function(){
 
                     component.set( 'tags', ['what', 'the', 'fox', 'say'] );
 
-                    self.registry.updateComponent( component, null, function(err,component){
+                    self.registry.updateComponent( component, 16, null, function(err,component){
                         done();
                     });
 
