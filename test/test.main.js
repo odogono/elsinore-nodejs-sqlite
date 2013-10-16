@@ -103,20 +103,40 @@ describe('odgn-entity-sqlite', function(){
 
     describe('Component', function(){
 
-        it('should', function(done){
+        it.skip('should instantiate a component from data', function(done){
             var self = this;
-            self.registry.createComponent('/component/tags', {tags:[ 'alpha', 'beta', 'gamma' ]}, {debug:true}, function(err, component){
-                
-                // print_ins(component,2);
-                // process.exit();
-                done();
-                // self.storage.retrieveComponent('/component/human_name', {where:"first_name='alex'"}, function(err, component){
+            var componentData = {
+                id: 19,
+                entity_id: 6,
+                tags:[ 'super', 'cali', 'frag' ]
+            };
 
+            var component = self.registry.createComponent('/component/tags', componentData, {instantiate:true, debug:true} );
+            assert.equal( component.id, 19 );
+            assert.equal( component.get('tags')[1], 'cali');
+            assert.equal( component.entityId, 6 );
+            
+            done();
+        });
+
+        it('should update an existing component', function(done){
+            var self = this;
+            self.registry.createComponent('/component/tags', {entity_id:16, tags:[ 'alpha', 'beta', 'gamma' ]}, {debug:true}, function(err, component){
+
+                self.storage.retrieveComponentById('/component/tags', component.id, null, function(err, component){
+
+                    component.set( 'tags', ['what', 'the', 'fox', 'say'] );
+
+                    self.registry.updateComponent( component, null, function(err,component){
+                        done();
+                    });
+
+                    // print_ins( component,1 );
                 //     assert.equal( component.get('first_name'), 'alex' );
                 //     assert.equal( component.get('last_name'), 'veenendaal' );
 
-                //     done();    
-                // });
+                    
+                });
             });
         });
 
