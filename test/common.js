@@ -103,6 +103,7 @@ global.Storage = require('../');
 global.Schema = require('../lib/schema');
 global.initRegistryWithSql = function( sqlitePath, sqlFixturePath, callback ){
     var registry, storage;
+    // log.debug('loading sql fixture from ' + Common.pathFixture(sqlFixturePath) );
     Storage.loadSql( sqlitePath, fs.readFileSync( Common.pathFixture(sqlFixturePath)).toString(), function(err, storage){
         odgnEntity.Registry.create({initialize:true, storage:storage, verbose:true, filename:sqlitePath}, function(err, registry){
             if( err ) throw err;

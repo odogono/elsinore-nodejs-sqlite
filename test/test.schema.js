@@ -29,7 +29,7 @@ describe('odgn-entity-sqlite', function(){
     });
 
 
-    describe('EntitySet', function(){
+    describe.skip('EntitySet', function(){
 
         it('should', function(done){
 
@@ -58,21 +58,29 @@ describe('odgn-entity-sqlite', function(){
 
     });
 
-    describe.skip('Schema', function(){
+    describe('Schema', function(){
 
-        it('should create a basic select statement from a schema', function(){
-            var stub = statementStub( 'tbl_test', 'SELECT * FROM tbl_test' );
+        it.skip('should create a basic select statement from a schema', function(){
+            var stub = statementStub( 'tbl_test', 'SELECT tbl_test.* FROM tbl_test' );
             var statement = Schema.toSelect('/component/test');
             stub.restore();
         });
 
-        it('should obey the limit parameter', function(){
+        it('should create a basic select statement from a schema', function(){
+            var stub = statementStub( 'tbl_test', 'DELETE FROM tbl_test WHERE id=?', null, [34] );
+            var statement = Schema.toDelete('/component/test', {where:{id:34}} );
+            assert.equal( statement.getSql(), 'DELETE FROM tbl_test WHERE id=?');
+            print_ins( statement,2 );
+            stub.restore();
+        });
+
+        it.skip('should obey the limit parameter', function(){
             var stub = statementStub( 'tbl_test', 'SELECT * FROM tbl_test LIMIT 1' );
             var statement = Schema.toSelect('/component/test', {limit:1} );
             stub.restore();
         });
 
-        it('should create a basic select with where statement from a schema', function(){
+        it.skip('should create a basic select with where statement from a schema', function(){
             var stub = statementStub( 'tbl_test', 'SELECT * FROM tbl_test WHERE id=?', null, [45] );
 
             var statement = Schema.toSelect('/component/test', {where:{id:45}} );
@@ -80,7 +88,7 @@ describe('odgn-entity-sqlite', function(){
         });
 
 
-        it('should create a select with specified values', function(){
+        it.skip('should create a select with specified values', function(){
             var stub = statementStub( 'tbl_test', 'SELECT alpha,beta FROM tbl_test' );
             var statement = Schema.toSelect('/component/test', {columns:['alpha','beta']} );
             stub.restore();
@@ -227,6 +235,18 @@ var statementStub = function( tableName, sql, columns, parameters ){
             return {
                 get: function(){
                     return tableName;
+                },
+                getTableName: function(){
+                    return tableName;
+                },
+                setSql: function(val){
+                    log.debug('setSql ' + val + ' - ' + sql);
+                    assert.equal( val, sql );
+                },
+                setParameters: function(val){
+                    // console.log( arguments );
+                    // console.log( parameters );
+                    // assert.deepEqual(val,parameters);
                 },
                 set: function(key,val){
                     if( sql && key == 'sql' )

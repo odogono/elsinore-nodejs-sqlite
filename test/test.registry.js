@@ -22,7 +22,7 @@ describe('odgn-entity-sqlite', function(){
 
     describe('Entity', function(){
 
-        it('should', function(done){
+        it.skip('should', function(done){
             initRegistryWithComponentsAndImport(
                 'test.sqlite', 'components.set_a.json', 'entity.import.a.json', 
                 function(err,registry,storage){
@@ -31,17 +31,18 @@ describe('odgn-entity-sqlite', function(){
                 });
         })
 
-        it.skip('should initialise from existing', function(done){
+        it('should initialise from existing', function(done){
             var self = this;
 
-            Storage.loadSql( ':memory:', fs.readFileSync( Common.pathFixture('basic.sql')).toString(), function(err, storage){
+            initRegistryWithSql(':memory:', 'basic.sql', function(err, registry, storage){
+            // Storage.loadSql( ':memory:', fs.readFileSync( Common.pathFixture('basic.sql')).toString(), function(err, storage){
+                // self.registry = odgnEntity.Registry.create({initialize:false, storage:storage}, function(err, registry){
+                    // self.storage = registry.storage;
 
-                self.registry = odgnEntity.Registry.create({initialize:true, storage:storage}, function(err, registry){
-                    self.storage = registry.storage;
+                    // print_ins( storage );
+                    // assert( !storage.isNew );
 
-                    assert( !self.storage.isNew );
-
-                    self.storage.retrieveComponent('/component/human_name', {where:"last_name='fixture'"}, function(err, component){
+                    storage.retrieveComponent('/component/human_name', {where:"last_name='fixture'"}, function(err, component){
 
                         assert.equal( component.get('first_name'), 'charlie' );
                         assert.equal( component.get('last_name'), 'fixture' );
@@ -49,7 +50,7 @@ describe('odgn-entity-sqlite', function(){
 
                         done();    
                     });
-                });
+                // });
             });
         });
 

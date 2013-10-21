@@ -5,16 +5,6 @@ var sqlite3 = require('sqlite3').verbose();
 var Storage = require('../');
 var Schema = require('../lib/schema');
 
-// var initRegistryWithSql = function( sqlitePath, sqlFixturePath, callback ){
-//     var registry, storage;
-//     Storage.loadSql( sqlitePath, fs.readFileSync( Common.pathFixture(sqlFixturePath)).toString(), function(err, storage){
-//         odgnEntity.Registry.create({initialize:true, storage:storage, filename:sqlitePath}, function(err, registry){
-//             if( err ) throw err;
-//             return callback( err, registry, registry.storage );
-//         });
-//     });
-// }
-
 
 describe('EntitySet', function(){
 

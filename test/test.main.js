@@ -5,6 +5,39 @@ var sqlite3 = require('sqlite3').verbose();
 var Storage = require('../');
 var Schema = require('../lib/schema');
 
+
+describe('odgn-entity-sqlite', function(){
+    describe('deletion', function(){
+        it('should remove a component from an entity', function(done){
+            initRegistryWithSql(':memory:', 'content_sets.sql', function(err, registry, storage){
+                
+                return registry.getEntityComponents( 102, {decorate:true}, function(err, components, entity){
+                    assert( entity.poi );
+                    var startingBf = entity.get('component_bf').toHexString();
+                    log.debug( entity.get('component_bf').toHexString() );
+                    
+                    return registry.removeComponent( entity.poi, entity, null, function(err,component,entity){
+                        log.debug( entity.get('component_bf').toHexString() );
+                        var removedBf = entity.get('component_bf').toHexString();
+
+                        return registry.getEntityComponents( 102, {decorate:true}, function(err, components, entity){
+                            assert( !entity.poi );
+                            log.debug( entity.get('component_bf').toHexString() );
+                            assert.notEqual( startingBf, removedBf );
+
+                            // storage.getRow('SELECT * FROM tbl_entity WHERE id=102',null,function(err,row){
+                            //     print_ins( arguments );
+                            // });
+
+                            done();
+                        });
+                    });
+                });
+            });
+        });
+    });
+});
+
 describe('odgn-entity-sqlite', function(){
     beforeEach( function(done){
         var self = this;
@@ -101,7 +134,7 @@ describe('odgn-entity-sqlite', function(){
     });
 
 
-    describe('Component', function(){
+    describe.skip('Component', function(){
 
         it.skip('should instantiate a component from data', function(done){
             var self = this;
@@ -173,6 +206,8 @@ describe('odgn-entity-sqlite', function(){
             });
         })
     });
+
+
 
     describe.skip('EntitySet', function(){
         it.skip('should populate with existing components', function(done){
