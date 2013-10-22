@@ -23,7 +23,7 @@
                 "password_plain":"now2now"
             },
             {
-                "schemaId":"/component/name",
+                "schemaId":"/component/human_name",
                 
                 "first_name":"Administrator",
                 "last_name":"Administrator"
@@ -53,7 +53,7 @@
                 "password_plain":"now2now"
             },
             {
-                "schemaId":"/component/name",
+                "schemaId":"/component/human_name",
                 
                 "first_name":"Alexander",
                 "last_name":"Veenendaal"

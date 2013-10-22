@@ -8,7 +8,26 @@ var Schema = require('../lib/schema');
 
 describe('odgn-entity-sqlite', function(){
     describe('deletion', function(){
-        it('should remove a component from an entity', function(done){
+
+        it('should delete an entity and its components', function(done){
+
+            initRegistryWithSql(':memory:', 'entity.a.sql', function(err, registry, storage){
+            // initRegistryWithComponentsAndImport(
+            //     'test.sqlite', 'components.set_a.json', 'entity.import.b.json', 
+            //     function(err,registry,storage){
+
+                    return registry.destroyEntity( 1, null, function(err){
+                        return registry.getEntityComponents( 1, {decorate:true}, function(err, components, entity){
+                            assert( !entity );
+                            done();
+                        });
+                        
+                    });
+                });
+
+        });
+
+        it.skip('should remove a component from an entity', function(done){
             initRegistryWithSql(':memory:', 'content_sets.sql', function(err, registry, storage){
                 
                 return registry.getEntityComponents( 102, {decorate:true}, function(err, components, entity){

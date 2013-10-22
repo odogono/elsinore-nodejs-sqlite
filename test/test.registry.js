@@ -29,7 +29,7 @@ describe('odgn-entity-sqlite', function(){
                     log.debug('ok');
                     done();
                 });
-        })
+        });
 
         it('should initialise from existing', function(done){
             var self = this;

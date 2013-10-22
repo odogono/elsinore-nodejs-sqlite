@@ -18,7 +18,7 @@
     },
 
     {
-        "id":"/component/name",
+        "id":"/component/human_name",
         "properties":{
             "first_name":{ "type":"string" },
             "last_name":{ "type":"string" }
