@@ -1,6 +1,6 @@
 {
   "name": "odgn-entity-sqlite",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "author": "Alexander Veenendaal <alex@opendoorgonorth.com> http://opendoorgonorth.com",
   "dependencies": {
     "async": "~0.2.9",
