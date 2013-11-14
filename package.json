@@ -9,7 +9,7 @@
   },
 
   "peerDependencies": {
-    "odgn-entity": "~0.1.5"
+    "odgn-entity": "git+https://github.com/odogono/odgn-entity-sqlite"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
