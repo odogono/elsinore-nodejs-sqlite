@@ -5,11 +5,11 @@
   "dependencies": {
     "async": "~0.2.9",
     "bit-array": "~0.2.2",
-    "sqlite3": "~2.1.18"
+    "sqlite3": "~2.1.19"
   },
 
   "peerDependencies": {
-    "odgn-entity": "git+https://github.com/odogono/odgn-entity-sqlite"
+    "odgn-entity": "git+https://github.com/odogono/odgn-entity"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
