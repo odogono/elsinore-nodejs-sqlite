@@ -35,22 +35,14 @@ describe('odgn-entity-sqlite', function(){
             var self = this;
 
             initRegistryWithSql(':memory:', 'basic.sql', function(err, registry, storage){
-            // Storage.loadSql( ':memory:', fs.readFileSync( Common.pathFixture('basic.sql')).toString(), function(err, storage){
-                // self.registry = odgnEntity.Registry.create({initialize:false, storage:storage}, function(err, registry){
-                    // self.storage = registry.storage;
+                storage.retrieveComponent('/component/human_name', {where:"last_name='fixture'"}, function(err, component){
 
-                    // print_ins( storage );
-                    // assert( !storage.isNew );
+                    assert.equal( component.get('first_name'), 'charlie' );
+                    assert.equal( component.get('last_name'), 'fixture' );
+                    assert.equal( component.get('location'), 'flatland' );
 
-                    storage.retrieveComponent('/component/human_name', {where:"last_name='fixture'"}, function(err, component){
-
-                        assert.equal( component.get('first_name'), 'charlie' );
-                        assert.equal( component.get('last_name'), 'fixture' );
-                        assert.equal( component.get('location'), 'flatland' );
-
-                        done();    
-                    });
-                // });
+                    done();    
+                });
             });
         });
 

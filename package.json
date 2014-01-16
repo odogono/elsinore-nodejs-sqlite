@@ -1,15 +1,17 @@
 {
   "name": "odgn-entity-sqlite",
-  "version": "0.1.4",
-  "author": "Alexander Veenendaal <alex@opendoorgonorth.com> http://opendoorgonorth.com",
+  "version": "0.1.6",
+  "author": {
+    "name": "Alexander Veenendaal",
+    "email": "alex@opendoorgonorth.com"
+  },
   "dependencies": {
     "async": "~0.2.9",
     "bit-array": "~0.2.2",
     "sqlite3": "2.1.x"
   },
-
   "peerDependencies": {
-    "odgn-entity": "git+https://github.com/odogono/odgn-entity"
+    "odgn-entity": "0.1.x"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
@@ -18,8 +20,13 @@
     "grunt-contrib-watch": "~0.3.1",
     "grunt-jsbeautifier": "~0.1.7",
     "grunt-simple-mocha": "~0.4.0",
-    "mocha": "~1.4.0",
+    "mocha": "~1.14.0",
     "shelljs": "~0.2.6",
     "sinon": "~1.7.3"
-  }
+  },
+  "readme": "odgn-entity-sqlite\n==================\n",
+  "readmeFilename": "README.md",
+  "description": "odgn-entity-sqlite ==================",
+  "_id": "odgn-entity-sqlite@0.1.6",
+  "_from": "odgn-entity-sqlite@0.1.x"
 }
